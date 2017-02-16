@@ -9,7 +9,7 @@ RUN apt-get update
 && cd /var/koel
 
 # Ajout/MaJ des dependences:
-RUN  apt-get install -y curl php-cli php-mbstring git unzip wget
+RUN  apt-get install -y curl php-cli php-mbstring git unzip wget phpunit php-curl
 
 # Ajout/MaJ de composer:
 RUN wget https://getcomposer.org/composer.phar
@@ -18,10 +18,14 @@ RUN wget https://getcomposer.org/composer.phar
 && ./composer
 && mv composer /usr/local/bin
 
-# Add the start script
-ADD start.sh /tmp/start.sh
-RUN chmod 755 /tmp/start.sh
-VOLUME ["/data"]
-EXPOSE 64738
+# Ajout/MaJ MySQL:
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password $ROOT_DB_PWD'
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $ROOT_DB_PWD'
+RUN apt-get install -y mysql-server
+RUN service mysql start
+RUN mysql -u root -p$ROOT_DB_PWD -e "CREATE DATABASE koel;"
 
-CMD ["/tmp/start.sh"]
+# Ajout/MaJ de Koel:
+RUN git clone https://github.com/phanan/koel
+RUN cd /var/koel/koel
+RUN composer install
