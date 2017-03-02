@@ -20,11 +20,11 @@ RUN wget https://getcomposer.org/composer.phar \
   && mv composer /usr/local/bin \
 
 # Ajout/MaJ MySQL:
-RUN debconf-set-selections <<< 'mysql-server mysql-server/root_password password $ROOT_DB_PWD'
-RUN debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $ROOT_DB_PWD'
-RUN apt-get install -y mysql-server
-RUN service mysql start
-RUN mysql -u root -p$ROOT_DB_PWD -e "CREATE DATABASE koel;"
+RUN debconf-set-selections <<< 'mysql-server mysql-server/root_password password $ROOT_DB_PWD' \
+  && debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $ROOT_DB_PWD' \
+  && apt-get install -y mysql-server \
+  && service mysql start \
+  && mysql -u root -p$ROOT_DB_PWD -e "CREATE DATABASE koel;"
 
 # Ajout/MaJ de Koel:
 RUN git clone https://github.com/phanan/koel \
