@@ -2,6 +2,11 @@ FROM ubuntu:16.04
 
 MAINTAINER MonX<adm.forum.mestria@gmail.com>
 
+# Variables:
+RUN export DEBIAN_FRONTEND="noninteractive"
+RUN debconf-set-selections <<< "mysql-server mysql-server/root_password password $ROOT_DB_PWD"
+RUN debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $ROOT_DB_PWD"
+
 # MaJ du systeme:
 RUN set -x \
   && apt-get update \
@@ -20,9 +25,7 @@ RUN wget https://getcomposer.org/composer.phar \
   && mv composer /usr/local/bin
 
 # Ajout/MaJ MySQL:
-RUN debconf-set-selections <<< 'mysql-server mysql-server/root_password password $ROOT_DB_PWD' \
-  && debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $ROOT_DB_PWD' \
-  && apt-get install -y mysql-server \
+RUN apt-get install -y mysql-server \
   && service mysql start \
   && mysql -u root -p$ROOT_DB_PWD -e "CREATE DATABASE koel;"
 
