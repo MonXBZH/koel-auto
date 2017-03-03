@@ -3,9 +3,14 @@ FROM ubuntu:16.04
 MAINTAINER MonX<adm.forum.mestria@gmail.com>
 
 # Variables:
-RUN export DEBIAN_FRONTEND="noninteractive" \
-RUN export debconf-set-selections <<< "mysql-server mysql-server/root_password password $ROOT_DB_PWD" \
-RUN export debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $ROOT_DB_PWD"
+ENV MYSQL_USER=mysql \
+  MYSQL_DATA_DIR=/var/lib/mysql \
+  MYSQL_RUN_DIR=/run/mysqld \
+  MYSQL_LOG_DIR=/var/log/mysql \
+  DEBIAN_FRONTEND=noninteractive
+
+# Ports exposés:
+EXPOSE 3306/tcp
 
 # MaJ du systeme:
 RUN set -x \
@@ -25,9 +30,16 @@ RUN wget https://getcomposer.org/composer.phar \
   && mv composer /usr/local/bin
 
 # Ajout/MaJ MySQL:
+RUN echo "mysql-server-5.6 mysql-server/root_password password rootmdp" | sudo debconf-set-selections
+RUN echo "mysql-server-5.6 mysql-server/root_password_again password rootmdp" | sudo debconf-set-selections
 RUN apt-get install -y mysql-server \
+  && rm -rf ${MYSQL_DATA_DIR} \
+  && rm -rf /var/lib/apt/lists/* \
   && service mysql start \
-  && mysql -u root -p$ROOT_DB_PWD -e "CREATE DATABASE koel;"
+  && mysql -u root -e "CREATE DATABASE koel;"
+VOLUME ["${MYSQL_DATA_DIR}", "${MYSQL_RUN_DIR}"]
+ENTRYPOINT ["/sbin/entrypoint.sh"]
+CMD ["/usr/bin/mysqld_safe"]
 
 # Ajout/MaJ de Koel:
 RUN git clone https://github.com/phanan/koel \
