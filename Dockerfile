@@ -17,7 +17,7 @@ RUN wget https://getcomposer.org/composer.phar \
   && mv composer.phar composer \
   && chmod +x composer \
   && ./composer \
-  && mv composer /usr/local/bin \
+  && mv composer /usr/local/bin
 
 # Ajout/MaJ MySQL:
 RUN debconf-set-selections <<< 'mysql-server mysql-server/root_password password $ROOT_DB_PWD' \
