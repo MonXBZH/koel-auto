@@ -4,7 +4,7 @@ MAINTAINER MonX<adm.forum.mestria@gmail.com>
 
 # Variables:
 RUN DEBIAN_FRONTEND="noninteractive" \
-&& debconf-set-selections <<< "mysql-server mysql-server/root_password password $ROOT_DB_PWD"
+&& debconf-set-selections <<< "mysql-server mysql-server/root_password password $ROOT_DB_PWD" \
 && debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $ROOT_DB_PWD"
 
 # MaJ du systeme:
