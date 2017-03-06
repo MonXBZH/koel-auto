@@ -30,9 +30,9 @@ RUN wget https://getcomposer.org/composer.phar \
   && mv composer /usr/local/bin
 
 # Ajout/MaJ MySQL:
-RUN echo "mysql-server mysql-server/root_password password rootmdp" | sudo debconf-set-selections
-RUN echo "mysql-server mysql-server/root_password_again password rootmdp" | sudo debconf-set-selections
-RUN apt-get install -y mysql-server \
+CMD echo "mysql-server mysql-server/root_password password rootmdp" | sudo debconf-set-selections
+CMD echo "mysql-server mysql-server/root_password_again password rootmdp" | sudo debconf-set-selections
+CMD apt-get install -y mysql-server \
   && rm -rf ${MYSQL_DATA_DIR} \
   && rm -rf /var/lib/apt/lists/* \
   && service mysql start \
