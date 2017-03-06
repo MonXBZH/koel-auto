@@ -42,6 +42,6 @@ ENTRYPOINT ["/sbin/entrypoint.sh"]
 CMD ["/usr/bin/mysqld_safe"]
 
 # Ajout/MaJ de Koel:
-RUN git clone https://github.com/phanan/koel \
+CMD git clone https://github.com/phanan/koel \
  && cd /var/koel/koel \
  && composer install
