@@ -40,6 +40,7 @@ CMD ["/usr/bin/mysqld_safe"]
 
 # Ajout/MaJ de Koel:
 CMD rm -Rf /var/koel/* \
+ && cd /var/koel \
  && git clone https://github.com/phanan/koel \
  && cd /var/koel/koel \
  && composer install
