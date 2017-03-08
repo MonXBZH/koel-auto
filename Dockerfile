@@ -16,8 +16,6 @@ EXPOSE 3306/tcp
 RUN set -x \
   && apt-get update \
   && apt-get upgrade -y \
-  && mkdir /var/koel \
-  && cd /var/koel
 
 # Ajout/MaJ des dependences:
 RUN  apt-get install -y curl php-cli php-mbstring git unzip wget phpunit php-curl
