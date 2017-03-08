@@ -15,7 +15,7 @@ EXPOSE 3306/tcp
 # MaJ du systeme:
 RUN set -x \
   && apt-get update \
-  && apt-get upgrade -y \
+  && apt-get upgrade -y
 
 # Ajout/MaJ des dependences:
 RUN  apt-get install -y curl php-cli php-mbstring git unzip wget phpunit php-curl
