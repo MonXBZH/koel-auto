@@ -38,7 +38,6 @@ CMD apt-get install -y mysql-server \
   && service mysql start \
   && mysql -u root -e "CREATE DATABASE koel;"
 VOLUME ["${MYSQL_DATA_DIR}", "${MYSQL_RUN_DIR}"]
-ENTRYPOINT ["/sbin/entrypoint.sh"]
 CMD ["/usr/bin/mysqld_safe"]
 
 # Ajout/MaJ de Koel:
