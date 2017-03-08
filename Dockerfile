@@ -39,7 +39,8 @@ VOLUME ["${MYSQL_DATA_DIR}", "${MYSQL_RUN_DIR}"]
 CMD ["/usr/bin/mysqld_safe"]
 
 # Ajout/MaJ de Koel:
-CMD rm -Rf /var/koel/* \
+CMD mkdir -p /var/koel \
+ && rm -Rf /var/koel/* \
  && cd /var/koel \
  && git clone https://github.com/phanan/koel \
  && cd /var/koel/koel \
